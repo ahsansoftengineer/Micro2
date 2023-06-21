@@ -44,4 +44,10 @@ dotnet dev-certs https --trust
 // Initializing git
 git init
 dotnet new gitignore
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/ahsansoftengineer/DotnetCoreMicroService.git
+git push -u origin main
 ```
+
