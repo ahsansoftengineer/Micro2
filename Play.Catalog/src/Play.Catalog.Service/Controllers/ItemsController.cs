@@ -26,9 +26,10 @@ public class ItemsController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public ItemDto GetById(Guid id)
+    public ActionResult<ItemDto> GetById(Guid id)
     {
         var item = items.Where(x => x.Id == id).SingleOrDefault();
+        if(item == null) return NotFound();
         return item;
     }
     [HttpPost]
@@ -40,6 +41,7 @@ public class ItemsController : ControllerBase
     [HttpPut("{id}")]
     public ActionResult Put(Guid id, CreateItemDto dto){
         var item = items.Where(item => item.Id == id).SingleOrDefault();
+        if(item == null) return NotFound();
 
         var updatedItem = item with {
             Name = dto.Name,
@@ -53,6 +55,7 @@ public class ItemsController : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult Delete(Guid id){
         var index = items.FindIndex(x => x.Id == id);
+        if(index == -1) return NotFound();
         items.RemoveAt(index);
         return NoContent();
     }
