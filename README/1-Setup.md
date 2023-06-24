@@ -1,3 +1,4 @@
+## Initial Project Setup
 1. Startingup MicroService with VS Code
 ```c#
 // With in the Folder
@@ -50,5 +51,6 @@ git branch -M main
 git remote add origin https://github.com/ahsansoftengineer/DotnetCoreMicroService.git
 git push -u origin main
 git push -u origin 0-InMemory-API
+git checkout -b feature_branch_name
 ```
 
