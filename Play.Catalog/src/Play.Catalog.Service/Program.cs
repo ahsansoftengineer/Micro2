@@ -1,36 +1,15 @@
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Serializers;
-using MongoDB.Driver;
-using Play.Catalog.Service.Settings;
 using Play.Catalog.Service.Repo;
+using Play.Catalog.Service.Entities;
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 ConfigurationManager? configuration = builder.Configuration;
 IServiceCollection? services = builder.Services;
 
 // Add services to the container.
+services
+  .AddMongo()
+  .AddMongoRepo<Item>("items");
 
-{
-  BsonSerializer.RegisterSerializer(
-      new GuidSerializer(BsonType.String)
-  );
-  BsonSerializer.RegisterSerializer(
-      new DateTimeOffsetSerializer(BsonType.String)
-  );
-  ServiceSettings? serviceSettings = builder.Configuration.GetSection(
-      nameof(ServiceSettings)).Get<ServiceSettings>();
-
-  builder.Services.AddSingleton(sp =>
-  {
-    MongoDbSettings? mongoSettings = configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
-
-    MongoClient? mongoClient = new MongoClient(mongoSettings.ConnectionString);
-
-    return mongoClient.GetDatabase(serviceSettings.ServiceName);
-  });
-  services.AddSingleton<IItemsRepository, ItemsRepository>(); 
-}
 
 services.AddControllers(options =>
 {
