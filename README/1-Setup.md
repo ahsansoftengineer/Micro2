@@ -53,4 +53,18 @@ git push -u origin main
 git push -u origin 0-InMemory-API
 git checkout -b feature_branch_name
 ```
+7. Stop Application to Open browser when Application Running
+- .vscode / launch.json > 
+```json
+[
+  "Configuration" : {
+    // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
+    "serverReadyAction": {
+      "action": "openExternally",
+      "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+    },
+  }
+]
+     
+```
 

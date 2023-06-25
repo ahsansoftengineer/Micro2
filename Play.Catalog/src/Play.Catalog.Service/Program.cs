@@ -6,8 +6,8 @@ using Play.Catalog.Service.Settings;
 using Play.Catalog.Service.Repo;
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
-  ConfigurationManager? configuration = builder.Configuration;
-  IServiceCollection? services = builder.Services;
+ConfigurationManager? configuration = builder.Configuration;
+IServiceCollection? services = builder.Services;
 
 // Add services to the container.
 
