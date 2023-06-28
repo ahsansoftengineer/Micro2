@@ -7,7 +7,7 @@
       "type": "process",
       "args": [
         "build",
-        "${workspaceFolder}/src/Play.Common/Play.Common.sln",
+        "${workspaceFolder}/Play.Common/Play.Common.sln",
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary"
       ],
@@ -23,7 +23,7 @@
       "type": "process",
       "args": [
         "publish",
-        "${workspaceFolder}/src/Play.Common/Play.Common.sln",
+        "${workspaceFolder}/Play.Common/Play.Common.sln",
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary"
       ],
@@ -37,7 +37,7 @@
         "watch",
         "run",
         "--project",
-        "${workspaceFolder}/src/Play.Common/Play.Common.sln"
+        "${workspaceFolder}/Play.Common/Play.Common.sln"
       ],
       "problemMatcher": "$msCompile"
     }

@@ -24,7 +24,15 @@ dotnet add package Microsoft.Extensions.DependencyInjection
 ```
 5. Copy paste the files concern with Common Package
 6. Fix Imports
-7. Build and Packages
+7. Build and Make Package for Upcomming Usage
 ```c#
-dotnet pack ..\..\..\packages\
+// Clear Nuget Cache
+// dotnet nuget locals all --clear // It will clear all packages don't use it
+// within the dir where csproj
+dotnet pack -o ../../packages
+// Telling dotnet source new source of Packages within the Directory PowerShell Command
+dotnet nuget add source D:\Dev\1-Core\MicroServiceBackEnd\packages -n PlayEconomy2
+
+// In the main Project
+dotnet add package Play.Common
 ```
