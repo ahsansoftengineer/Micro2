@@ -1,5 +1,6 @@
-using Play.Catalog.Service.Repo;
+
 using Play.Catalog.Service.Entities;
+using Play.Common.Repo;
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 ConfigurationManager? configuration = builder.Configuration;
@@ -9,7 +10,6 @@ IServiceCollection? services = builder.Services;
 services
   .AddMongo()
   .AddMongoRepo<Item>("items");
-
 
 services.AddControllers(options =>
 {
