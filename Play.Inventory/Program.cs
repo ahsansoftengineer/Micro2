@@ -1,37 +1,36 @@
-
-using Play.Catalog.Service.Entities;
 using Play.Common.Repo;
+using Play.Inventory.Entities;
+using Play.Inventory.Service.Clients;
 
-WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager? configuration = builder.Configuration;
 IServiceCollection? services = builder.Services;
 
 // Add services to the container.
 services
   .AddMongo()
-  .AddMongoRepo<Item>("items");
+  .AddMongoRepo<InventoryItem>("inventoryItem");
+
+services.AddHttpClient<CatalogClient>(client => {
+  client.BaseAddress = new Uri("https://localhost:8000");
+});
+
 services.AddControllers(options =>
 {
   options.SuppressAsyncSuffixInActionNames = false;
 });
-
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-services.AddEndpointsApiExplorer();
-services.AddSwaggerGen();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-  app.UseSwagger();
-  app.UseSwaggerUI();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
-// Host.CreateDefaultBuilder(args)
-//   .ConfigureWebHostDefaults(webBuilder =>
-//   {
-//       webBuilder.UseUrls("http://0.0.0.0:5001"); // Set the desired listening address and port
-//   });
 
 app.UseHttpsRedirection();
 
