@@ -18,8 +18,7 @@ services.AddHttpClient<CatalogClient>(client =>
   client.BaseAddress = new Uri("https://localhost:8000");
 })
 .AddTransientHttpErrorPolicy(builder =>
-{
-  return builder.Or<TimeoutRejectedException>().WaitAndRetryAsync(
+ builder.Or<TimeoutRejectedException>().WaitAndRetryAsync(
     5,
     retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
     onRetry: (OutcomeType, timeSpan, retryAttempt) =>
@@ -28,9 +27,25 @@ services.AddHttpClient<CatalogClient>(client =>
       sp.GetService<ILogger<CatalogClient>>()?
         .LogWarning($"Delaying for {timeSpan.TotalSeconds} seconds, thenmaking retry {retryAttempt}");
     }
+ ))
+.AddTransientHttpErrorPolicy(builder =>
+ builder.Or<TimeoutRejectedException>().CircuitBreakerAsync(
+    3,
+    TimeSpan.FromSeconds(15),
+    onBreak: (OutcomeType, timeSpan) =>
+    {
+      var sp = services.BuildServiceProvider();
+      sp.GetService<ILogger<CatalogClient>>()?
+        .LogWarning($"Opening the Circuit for {timeSpan.TotalSeconds} seconds...");
+    },
+    onReset: () =>
+    {
+      var sp = services.BuildServiceProvider();
+      sp.GetService<ILogger<CatalogClient>>()?
+        .LogWarning($"Closing Circuit...");
+    }
 
-  );
-})
+ ))
 .AddPolicyHandler(Policy.TimeoutAsync<HttpResponseMessage>(1));
 
 services.AddControllers(options =>
