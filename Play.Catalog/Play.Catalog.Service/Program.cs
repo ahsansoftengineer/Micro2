@@ -1,5 +1,6 @@
 
 using Play.Catalog.Service.Entities;
+using Play.Common.MassTransit;
 using Play.Common.Repo;
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,9 @@ IServiceCollection? services = builder.Services;
 services
   .AddMongo()
   .AddMongoRepo<Item>("items");
+
+services.AddMassTransitWithRabbitMq();
+
 services.AddControllers(options =>
 {
   options.SuppressAsyncSuffixInActionNames = false;

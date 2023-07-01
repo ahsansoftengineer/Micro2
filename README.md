@@ -9,9 +9,11 @@ dotnet run
 dotnet run --launch-profile https
 ```
 ### Custom / Local Packages
+- Packages are Prebuild
 ```c#
 dotnet new classlib -n Play.Common 
-dotnet pack -o ../../packages 
+dotnet pack -o ../packages 
+dotnet pack -p:PackageVersion=1.0.1 -o ../packages 
 
 dotnet nuget add source D:\Dev\1-Core\MicroServiceBackEnd\packages -n PlayEconomy
 
@@ -19,6 +21,12 @@ dotnet nuget add source ../../packages/ -n PlayEconomy
 
 dotnet nuget remove source PlayEconomy 
 dotnet nuget list source
+
+```
+### Local Projects
+- Packages are not Prebuild
+```c#
+dotnet add reference ../../Play.Catalog.Contracts/Play.Catalog.Contracts.csproj
 
 ```
 ### Dotnet Core Packages

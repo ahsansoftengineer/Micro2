@@ -1,4 +1,6 @@
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
+using Play.Catalog.Contracts;
 using Play.Catalog.Service.Dtos;
 using Play.Catalog.Service.Entities;
 using Play.Common.Repo;
@@ -11,31 +13,23 @@ public class ItemsController : ControllerBase
 {
     private readonly ILogger<ItemsController> _logger;
     private readonly IRepo<Item> repo;
+    private readonly IPublishEndpoint publishEndpoint;
     public ItemsController(
         ILogger<ItemsController> logger,
-        IRepo<Item> repo
+        IRepo<Item> repo,
+        IPublishEndpoint publishEndpoint
         )
     {
         _logger = logger;
         this.repo = repo;
+        this.publishEndpoint = publishEndpoint;
     }
-    public static int requestCounter = 0;
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ItemDto>>> GetAsync()
     {
-        Console.WriteLine($"Request {++requestCounter}: Starting...");
-        if(requestCounter <= 2) {
-            Console.WriteLine($"Request {requestCounter}: Delaying...");
-            await Task.Delay(TimeSpan.FromSeconds(10));
-        }
-        if(requestCounter <= 4) {
-            Console.WriteLine($"Request {requestCounter}: 500 Inernal Server Error...");
-            return StatusCode(500);
-        }
         var items = (await repo.GetAllAsync()).Select(
             item => item.AsDto()
         );
-            Console.WriteLine($"Request {requestCounter}: 200 OK");
         return Ok(items);
     }
 
@@ -43,7 +37,6 @@ public class ItemsController : ControllerBase
     public async Task<ActionResult<ItemDto>> GetByIdAsync(Guid id)
     {
         var item  = await repo.GetAsync(id);
-
         if(item == null) return NotFound();
         return item.AsDto();
     }
@@ -56,6 +49,9 @@ public class ItemsController : ControllerBase
             CreatedDate = DateTimeOffset.UtcNow
         };
         await repo.CreateAsync(item);
+        await publishEndpoint.Publish(
+            new CatalogItemCreated(item.Id, item.Name, item.Description)
+        );
         return CreatedAtAction(nameof(GetByIdAsync), new {id = item.Id}, item);
     }
     [HttpPut("{id}")]
@@ -68,6 +64,9 @@ public class ItemsController : ControllerBase
         item.Price = dto.Price;
 
         await repo.UpdateAsync(item);
+        await publishEndpoint.Publish(
+            new CatalogItemUpdated(item.Id, item.Name, item.Description)
+        );
         return NoContent();
     }
 
@@ -77,6 +76,9 @@ public class ItemsController : ControllerBase
         if(item == null) return NotFound();
 
         await repo.RemoveAsync(id);
+        await publishEndpoint.Publish(
+            new CatalogItemDeleted(item.Id)
+        );
         return NoContent();
     }
 

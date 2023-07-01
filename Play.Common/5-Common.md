@@ -29,11 +29,23 @@ dotnet add package Microsoft.Extensions.DependencyInjection
 // Clear Nuget Cache
 // dotnet nuget locals all --clear // It will clear all packages don't use it
 // within the dir where csproj
-dotnet pack -o ../../packages // Bash Command
+dotnet pack -o ../packages // Bash Command
 // Telling dotnet source new source of Packages within the Directory PowerShell Command
 dotnet nuget add source D:\Dev\1-Core\MicroServiceBackEnd\packages -n PlayEconomy2 // PS Command
 dotnet nuget list source
 
 // In the main Project
 dotnet add package Play.Common
+```
+
+### RabbitMQ
+1. Install the Packages
+```c#
+dotnet add package MassTransit.AspNetCore
+dotnet add package MassTransit.RabbitMQ
+```
+2. Extension Configuration : MassTransit > AddMassTransitWithRabbitMQ
+3. Run the Command to Make a Package
+```c#
+dotnet pack -o ../packages
 ```
