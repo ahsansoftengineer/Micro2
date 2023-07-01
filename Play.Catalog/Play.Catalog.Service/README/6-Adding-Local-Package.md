@@ -15,3 +15,7 @@ dotnet nuget remove source PlayEconomy // Removing Local Projects
 dotnet nuget list source
 dotnet add package
 ```
+### RabitMQ
+```c#
+dotnet add package MassTransit.AspNetCore
+```
