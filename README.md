@@ -11,7 +11,6 @@ dotnet run --launch-profile https
 ### Custom / Local Packages
 - Packages are Prebuild
 ```c#
-dotnet new classlib -n Play.Common 
 dotnet pack -o ../packages 
 dotnet pack -p:PackageVersion=1.0.1 -o ../packages 
 
@@ -26,7 +25,10 @@ dotnet nuget list source
 ### Local Projects
 - Packages are not Prebuild
 ```c#
+// Play.Catalog.Service
 dotnet add reference ../../Play.Catalog.Contracts/Play.Catalog.Contracts.csproj
+// Play.Catalog.Inventory
+dotnet add reference ../Play.Catalog.Contracts/Play.Catalog.Contracts.csproj
 
 ```
 ### Dotnet Core Packages
