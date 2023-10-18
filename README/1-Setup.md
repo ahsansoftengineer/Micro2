@@ -32,11 +32,16 @@ PS MicroServiceBackEnd\Play.Catalog\src\Play.Catalog.Service> dotnet build
 ```
 6. Dotnet Core Project Setup
 ```c#
-// Run Project
+// Run Project // http://localhost:5220/swagger/index.html
 PS MicroServiceBackEnd\Play.Catalog\src\Play.Catalog.Service> dotnet run
+PS MicroServiceBackEnd\Play.Catalog\src\Play.Catalog.Service> dotnet run https // profileName
 // VS Code Sidebar Menu > Debug & Run >
+
+
 Click on the Play Button |>
 Ctrl + F5
+// https://localhost:8000/swagger/index.html
+// http://localhost:8001/swagger/index.html
  
 // Dev Certificate
 dotnet dev-certs https --trust
